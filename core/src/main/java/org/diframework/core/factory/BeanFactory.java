@@ -45,12 +45,9 @@ public class BeanFactory {
         return null;
     }
 
-    private <I> void configureBean(I i) {
-        objectConfigurators.forEach(objectConfigurator -> objectConfigurator.configure(i, context));
-    }
-
-    private <I> void invokeBean(Class<I> type, I i) {
-        objectInvokers.forEach(objectInvoker -> objectInvoker.invoke(type, i));
+    public void configureBean(Object bean) {
+        objectConfigurators.forEach(objectConfigurator -> objectConfigurator.configure(bean, beanStorage));
+        objectInvokers.forEach(objectInvoker -> objectInvoker.invoke(bean));
     }
 
     private void initObjectConfiguratorList() {

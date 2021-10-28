@@ -1,6 +1,5 @@
 package org.diframework.core.configure.configurator.impl;
 
-import org.diframework.core.ApplicationContext;
 import org.diframework.core.annotations.Service;
 import org.diframework.core.configure.configurator.ObjectConfigurator;
 import org.diframework.core.factory.BeanStorage;

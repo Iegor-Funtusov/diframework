@@ -39,20 +39,8 @@ public class ApplicationContext {
     }
 
     public void configureBeanMap() {
-        mapInterfaceAndImplementation.forEach((ifc, impl) -> {
-            System.out.println("ifc = " + ifc);
-            System.out.println("impl = " + impl);
-            Field[] fields = impl.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(Autowired.class)) {
-                    field.setAccessible(true);
-                    try {
-                        field.set(impl, mapInterfaceAndImplementation.get(field.getType()));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        beanStorage.getBeanMap().forEach((ifc, impl) -> {
+            beanFactory.configureBean(impl);
         });
     }
 
@@ -62,6 +50,7 @@ public class ApplicationContext {
 
     public void setBeanStorage(BeanStorage beanStorage) {
         this.beanStorage = beanStorage;
+        this.beanStorage.setApplicationClassLoader(this.applicationClassLoader);
     }
 
     public void setBeanFactory(BeanFactory beanFactory) {

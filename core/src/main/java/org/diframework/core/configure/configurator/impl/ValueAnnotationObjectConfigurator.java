@@ -15,7 +15,7 @@ public class ValueAnnotationObjectConfigurator implements ObjectConfigurator {
     @Override
     public void configure(Object bean, BeanStorage beanStorage) {
         Field[] declaredFields = bean.getClass().getDeclaredFields();
-        Map<String, String> map = ResourcesUtil.getProperties(context.getApplicationClassLoader());
+        Map<String, String> map = ResourcesUtil.getProperties(beanStorage.getApplicationClassLoader());
         for (Field declaredField : declaredFields) {
             if (declaredField.isAnnotationPresent(Value.class)) {
                 Value resourceProperty = declaredField.getAnnotation(Value.class);
