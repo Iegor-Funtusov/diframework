@@ -4,6 +4,7 @@ import org.diframework.core.factory.BeanFactory;
 import org.diframework.core.factory.BeanStorage;
 import org.diframework.core.searcher.ApplicationSearcher;
 import org.diframework.core.searcher.DiframeworkSearcher;
+import org.diframework.core.crud.starter.console.ApplicationConsoleStarter;
 
 public class Application {
 
@@ -19,5 +20,7 @@ public class Application {
         context.initServiceInterfaces();
         context.initBeanMap();
         context.configureBeanMap();
+        ApplicationConsoleStarter applicationConsoleStarter = new ApplicationConsoleStarter(beanStorage);
+        applicationConsoleStarter.start();
     }
 }

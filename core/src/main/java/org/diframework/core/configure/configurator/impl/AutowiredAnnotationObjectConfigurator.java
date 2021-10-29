@@ -1,6 +1,6 @@
 package org.diframework.core.configure.configurator.impl;
 
-import org.diframework.core.annotations.Service;
+import org.diframework.core.annotations.Autowired;
 import org.diframework.core.configure.configurator.ObjectConfigurator;
 import org.diframework.core.factory.BeanStorage;
 
@@ -12,7 +12,7 @@ public class AutowiredAnnotationObjectConfigurator implements ObjectConfigurator
     public void configure(Object bean, BeanStorage beanStorage) {
         Field[] declaredFields = bean.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (declaredField.isAnnotationPresent(Service.class)) {
+            if (declaredField.isAnnotationPresent(Autowired.class)) {
                 declaredField.setAccessible(true);
                 Object impl = beanStorage.getBeanMap().get(declaredField.getType());
                 try {

@@ -36,7 +36,11 @@ public class ApplicationSearcher {
     }
 
     private boolean isServiceInterface(String className) {
-        return className.endsWith("Dao") || className.endsWith("Service") || className.endsWith("Controller");
+        return
+                className.endsWith("Dao") ||
+                className.endsWith("Service") ||
+                className.endsWith("Controller") ||
+                className.endsWith("Facade");
     }
 
     private boolean isStartWithRootPackage(String className, String rootPackage) {
