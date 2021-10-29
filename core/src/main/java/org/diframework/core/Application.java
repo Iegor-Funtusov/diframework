@@ -16,6 +16,7 @@ public class Application {
         context.setApplicationSearcher(applicationSearcher);
         context.setBeanStorage(beanStorage);
         context.setBeanFactory(beanFactory);
+        context.initServiceInterfaces();
         context.initBeanMap();
         context.configureBeanMap();
     }

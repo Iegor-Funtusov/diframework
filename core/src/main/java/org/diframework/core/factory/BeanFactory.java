@@ -31,7 +31,7 @@ public class BeanFactory {
 
     public <IFC> IFC createBeanByInterface(Class<IFC> ifc) {
         if (ifc.isInterface()) {
-            Set<Class<? extends IFC>> implementations = applicationSearcher.getScanner().getSubTypesOf(ifc);
+            Set<Class<? extends IFC>> implementations = applicationSearcher.getAllImplementation(ifc);
             for (Class<? extends IFC> implementation : implementations) {
                 if (implementation.isAnnotationPresent(Service.class)) {
                     try {

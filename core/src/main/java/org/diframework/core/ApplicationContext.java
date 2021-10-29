@@ -17,16 +17,19 @@ public class ApplicationContext {
     private BeanFactory beanFactory;
     private ApplicationSearcher applicationSearcher;
     private ClassLoader applicationClassLoader;
+    private String rootPackage;
 
     public ApplicationContext(Class<?> mainClass) {
         try {
-            Package rootPackage = mainClass.getPackage();
             applicationClassLoader = mainClass.getClassLoader();
-            List<Class<?>> allClasses = ClassLoaderUtil.getAllClassesByPackage(rootPackage.getName(), applicationClassLoader);
-            initServiceInterfaces(allClasses);
+            rootPackage = mainClass.getPackageName();
         } catch (Exception e) {
             System.out.println("e = " + e.getMessage());
         }
+    }
+
+    public void initServiceInterfaces() {
+        this.serviceInterfaces = applicationSearcher.findAllServiceInterfaces(applicationClassLoader, rootPackage);
     }
 
     public void initBeanMap() {
@@ -61,23 +64,7 @@ public class ApplicationContext {
         return applicationClassLoader;
     }
 
-    private void initServiceInterfaces(List<Class<?>> allClasses) {
-        this.serviceInterfaces = allClasses
-                .stream()
-                .filter(Class::isInterface)
-                .filter(this::isServiceType)
-                .filter(this::hasChildImpl)
-                .collect(Collectors.toSet());
-    }
-
-    private boolean isServiceType(Class<?> interfaceClass) {
-        return interfaceClass.getSimpleName().endsWith("Controller") ||
-                interfaceClass.getSimpleName().endsWith("Service") ||
-                interfaceClass.getSimpleName().endsWith("Dao");
-    }
-
-    private boolean hasChildImpl(Class<?> interfaceClass) {
-        Set<Class<?>> classes = this.applicationSearcher.getAllImplementation((Class<Object>) interfaceClass);
-        return classes.stream().noneMatch(Class::isInterface);
+    public String getRootPackage() {
+        return rootPackage;
     }
 }

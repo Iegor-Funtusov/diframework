@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>diframework-core</artifactId>
+    <artifactId>exam</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,14 +18,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.10.1</version>
+            <groupId>org.diframework</groupId>
+            <artifactId>diframework-core</artifactId>
+            <version>0.1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.24.jre7</version>
         </dependency>
     </dependencies>
 </project>
