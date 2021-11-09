@@ -14,16 +14,13 @@ public class BeanFactory {
 
     private final ApplicationSearcher applicationSearcher;
     private final DiframeworkSearcher diframeworkSearcher;
-    private final BeanStorage beanStorage;
     private final List<ObjectConfigurator> objectConfigurators = new ArrayList<>();
     private final List<ObjectInvoker> objectInvokers = new ArrayList<>();
 
     public BeanFactory(
             final ApplicationSearcher applicationSearcher,
-            final BeanStorage beanStorage,
             final DiframeworkSearcher diframeworkSearcher) {
         this.applicationSearcher = applicationSearcher;
-        this.beanStorage = beanStorage;
         this.diframeworkSearcher = diframeworkSearcher;
         initObjectConfiguratorList();
         initObjectInvokerList();
@@ -46,7 +43,7 @@ public class BeanFactory {
     }
 
     public void configureBean(Object bean) {
-        objectConfigurators.forEach(objectConfigurator -> objectConfigurator.configure(bean, beanStorage));
+        objectConfigurators.forEach(objectConfigurator -> objectConfigurator.configure(bean));
         objectInvokers.forEach(objectInvoker -> objectInvoker.invoke(bean));
     }
 

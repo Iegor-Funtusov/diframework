@@ -1,32 +1,52 @@
 package org.diframework.core.searcher;
 
+import org.diframework.core.storage.EntityStorage;
 import org.reflections.Reflections;
 import org.reflections.Store;
 
+import javax.persistence.Entity;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ApplicationSearcher {
 
     private final Reflections scanner;
+    private Set<Class<?>> serviceInterfaces;
 
-    public ApplicationSearcher(String packageToScan) {
-        this.scanner = new Reflections(packageToScan);
+    public ApplicationSearcher(Class<?> mainClass) {
+        this.scanner = new Reflections(mainClass.getPackageName());
+        initContext(mainClass);
     }
 
     public <IFC> Set<Class<? extends IFC>> getAllImplementation(Class<IFC> ifc) {
         return scanner.getSubTypesOf(ifc);
     }
 
-    public Set<Class<?>> findAllServiceInterfaces(ClassLoader appClassLoader, String rootPackage) {
+    private void initContext(Class<?> mainClass) {
+        findAllServiceInterfaces(mainClass.getClassLoader(), mainClass.getPackageName());
+    }
+
+    public Set<Class<?>> getServiceInterfaces() {
+        return serviceInterfaces;
+    }
+
+    private void findAllServiceInterfaces(ClassLoader appClassLoader, String rootPackage) {
         Store store = scanner.getStore();
         Collection<Map<String, Set<String>>> values = store.values();
-        Set<String> allClassesName = new HashSet<>();
+        Set<String> allInterfacesName = new HashSet<>();
         values.forEach((v) -> {
+            v.forEach((key, value) -> {
+                if (Entity.class.getName().equals(key)) {
+                    value.forEach(entity -> {
+                        EntityStorage.getInstance().getEntities().add(scanner.forClass(entity, appClassLoader));
+                    });
+                }
+            });
             Set<String> packageClasses = v.keySet();
-            allClassesName.addAll(packageClasses);
+            allInterfacesName.addAll(packageClasses);
         });
-        return allClassesName
+
+        this.serviceInterfaces = allInterfacesName
                 .stream()
                 .filter(this::isServiceInterface)
                 .filter(s -> isStartWithRootPackage(s, rootPackage))

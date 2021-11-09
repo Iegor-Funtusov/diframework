@@ -1,6 +1,6 @@
 package org.diframework.core.crud.starter.console;
 
-import org.diframework.core.factory.BeanStorage;
+import org.diframework.core.storage.BeanStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,8 +14,8 @@ public class ApplicationConsoleStarter {
 
     private final Map<Integer, ConsoleControllerHelper> map = new HashMap<>();
 
-    public ApplicationConsoleStarter(BeanStorage beanStorage) {
-        List<Object> controllers = beanStorage.getBeanMap().values()
+    public ApplicationConsoleStarter() {
+        List<Object> controllers = BeanStorage.getInstance().getBeanMap().values()
                 .stream().filter(obj -> obj.getClass().getName().endsWith("ControllerImpl"))
                 .collect(Collectors.toList());
         for (int i = 0; i < controllers.size(); i++) {
